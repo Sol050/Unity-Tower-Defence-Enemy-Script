@@ -1,0 +1,37 @@
+using System.Collections.Generic;
+using UnityEngine;
+
+public class BuildManager : MonoBehaviour
+{
+    public static BuildManager instance;
+
+    void Awake()
+    {
+        if (instance != null)
+        {
+            Debug.LogError("More than one Buildmanager in the scene!");
+            return;
+        }
+        instance = this;
+        
+    }
+
+    public GameObject standardTurretPrefab;
+    public GameObject missileLauncherPrefab;
+    
+
+    private TurretBluePrint turretToBuild;
+
+    public bool CanBuild { get { return turretToBuild != null; } }
+
+    public void BuildTurretOn (Node node)
+    {
+        GameObject turret = (GameObject)Instantiate(turretToBuild.prefab, node.GetBuildPosition(), Quaternion.identity);
+        node.turret = turret;
+    }
+
+    public void SelctTurretToBuild (TurretBluePrint turret)
+    {
+        turretToBuild = turret;
+    }
+}
